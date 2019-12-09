@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">TodoWithDiary</string>
+    <string name="bt_Private">Private</string>
+    <string name="bt_Work">Work</string>
+    <string name="bt_Diary">Diary</string>
+    <string name="bt_newTodo">新規作成</string>
+    <string name="bt_OnClickBack">戻る</string>
+    <string name="title">PRIVATE : TODO</string>
+    <string name="title_work">WORK:todo</string>
+    <string name="title_diary">DIARY:todo</string>
+    <string name="registerText">内容を入力してください。</string>
+    <string name="bt_register">登録</string>
+    <string name="bt_delete">削除</string>
+</resources>
