@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,20 +15,31 @@ import android.widget.TextView;
 
 import java.util.UUID;
 
+import static com.websarva.wings.android.todowithdiary.DatabaseHelper.TABLE_NAME;
+
 public class registerPrivateActivity extends AppCompatActivity {
     //保存ボタンフィールド
-    Button bt_registerPrivate;
+    private Button bt_registerPrivate;
+    private Button bt_onBack;
+    private TodoAdapter todo;
+    private EditText etNote;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_private);
 
-        Intent intent = this.getIntent();
 
         //戻るボタン処理
-        Button backButton = (Button) findViewById(R.id.bt_onBack);
-        backButton.setOnClickListener(new View.OnClickListener() {
+        bt_onBack = (Button) findViewById(R.id.bt_onBack);
+        //保存ボタン取得
+        bt_registerPrivate = (Button) findViewById(R.id.bt_registerPrivate);
+        //入力内容取得
+        etNote = (EditText) findViewById(R.id.registerPrivateTodo);
+
+
+        bt_onBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //保存せず一覧へ
@@ -34,15 +47,12 @@ public class registerPrivateActivity extends AppCompatActivity {
             }
         });
 
-        //保存ボタン取得
-        bt_registerPrivate = (Button) findViewById(R.id.bt_registerPrivate);
         //保存処理
         bt_registerPrivate.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                //入力内容取得
-                EditText etNote = (EditText) findViewById(R.id.registerPrivateTodo);
+
                 String note = etNote.getText().toString();
 
 
@@ -51,20 +61,20 @@ public class registerPrivateActivity extends AppCompatActivity {
 
                 try {
                     //インサート文字列
-                    String sqlInsert = "INSERT INTO db (todo) VALUES (?)";
+                    String sqlInsert = "INSERT INTO " + TABLE_NAME + " (todo) VALUES (?)";
 
                     SQLiteStatement stmt;
 
                     stmt = db.compileStatement(sqlInsert);
+
                     stmt.bindString(1, note);
 
                     stmt.executeInsert();
                 } finally {
                     db.close();
-                    finish();
                 }
 
-
+                finish();
 
                 etNote.setText("");
 
@@ -74,8 +84,32 @@ public class registerPrivateActivity extends AppCompatActivity {
             }
         });
 
+        todo = new TodoAdapter(this);
+
     }
 
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main_activity2, menu);
+//        return true;
+//    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 
 }
