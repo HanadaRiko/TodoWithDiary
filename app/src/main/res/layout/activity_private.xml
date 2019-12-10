@@ -65,7 +65,7 @@
                     android:text="@string/bt_OnClickBack" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/all_delete_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
