@@ -3,6 +3,7 @@ package com.websarva.wings.android.todowithdiary;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,15 +35,18 @@ public class privateActivity extends AppCompatActivity {
     private TodoAdapter todo;
     private List<Model> list = new ArrayList<Model>();
     private ListView lv_private;
+    private  int category;
 
-    TodoListAdapter rowAdapater;
+    TodoListAdapter rowAdapter;
 
-    private ArrayAdapter<String> adapter;
+    //private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private);
+
+        category = getIntent().getIntExtra("category",0);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -59,6 +64,7 @@ public class privateActivity extends AppCompatActivity {
 
 
         todo = new TodoAdapter(this);
+        //Cursor c = todo.getAllList(category);
         Cursor c = todo.getAllList();
         if (c.moveToFirst()) {
             do {
@@ -73,15 +79,57 @@ public class privateActivity extends AppCompatActivity {
         //ListView取得
         lv_private = findViewById(R.id.lv_private);
 
-        rowAdapater = new TodoListAdapter(this, 0, list);
+        rowAdapter = new TodoListAdapter(this, 0, list);
 
 
-        lv_private.setAdapter(rowAdapater);
+        lv_private.setAdapter(rowAdapter);
 
 
         //全削除ボタン
         Button all_delete_btn = findViewById(R.id.all_delete_btn);
         all_delete_btn.setOnClickListener(new ListItemClickListener());
+
+
+        //長押し削除
+        lv_private.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                final Model model = (Model) parent.getItemAtPosition(position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(privateActivity.this);
+                builder.setMessage("削除しますか？").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        DatabaseHelper helper = new DatabaseHelper(privateActivity.this);
+                        SQLiteDatabase db = helper.getWritableDatabase();
+
+                        try {
+                            String sqlPartDelete = "DELETE FROM " + TABLE_NAME + " WHERE _id = ?";
+
+                            SQLiteStatement stmt = db.compileStatement(sqlPartDelete);
+
+                            stmt.bindLong(1, model.get_id());
+
+                            stmt.executeUpdateDelete();
+                        } finally {
+                            db.close();
+                        }
+
+
+                        privateActivity.this.loadPrivateListView();
+                        // update ListView
+                        privateActivity.this.rowAdapter.notifyDataSetChanged();
+                        Toast.makeText(privateActivity.this, "削除しました", Toast.LENGTH_SHORT).show();
+                    }
+                }).setNegativeButton("キャンセル", null).setCancelable(true);
+                // show dialog
+                builder.show();
+                return false;
+            }
+        });
     }
 
     private class ListItemClickListener implements View.OnClickListener {
@@ -171,7 +219,7 @@ public class privateActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
 
                 String msg = "";
-                
+
                 //全削除dialog分岐
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
@@ -188,7 +236,7 @@ public class privateActivity extends AppCompatActivity {
                             db.close();
                         }
                         privateActivity.loadPrivateListView();
-                        privateActivity.rowAdapater.notifyDataSetChanged();
+                        privateActivity.rowAdapter.notifyDataSetChanged();
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         msg = getString(R.string.dialog_ng_toast);
@@ -198,8 +246,8 @@ public class privateActivity extends AppCompatActivity {
 
             }
         }
-
     }
+
 
 }
 

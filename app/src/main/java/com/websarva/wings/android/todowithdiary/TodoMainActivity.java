@@ -21,6 +21,7 @@ public class TodoMainActivity extends AppCompatActivity {
 
             public void onClick(View view) {
                 Intent intent = new Intent(TodoMainActivity.this, privateActivity.class);
+                intent.putExtra("category", 1);
                 startActivity(intent);
             }
         });
@@ -31,6 +32,7 @@ public class TodoMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TodoMainActivity.this, workActivity.class);
+                intent.putExtra("category", 2);
                 startActivity(intent);
             }
         });
@@ -41,6 +43,7 @@ public class TodoMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TodoMainActivity.this, diaryActivity.class);
+                intent.putExtra("category", 3);
                 startActivity(intent);
             }
         });

@@ -24,6 +24,9 @@ public class TodoAdapter {
 
     // リストを取得
     public Cursor getAllList(){
+        // if
+        //switch ()
+
         return db.query(DatabaseHelper.TABLE_NAME, null, null, null, null, null, null);
     }
 
