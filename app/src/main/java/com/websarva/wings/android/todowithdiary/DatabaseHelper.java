@@ -23,7 +23,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         sb.append("CREATE TABLE " + TABLE_NAME + "( ");
         sb.append("_id INTEGER PRIMARY KEY AUTOINCREMENT,");
+        sb.append("category INTEGER NOT NULL,");
         sb.append("todo TEXT NOT NULL");
+
+//        sb.append("todo_Private TEXT ,");
+//        sb.append("todo_Work TEXT ,");
+//        sb.append("todo_Diary TEXT");
         sb.append(");");
 
         String sql = sb.toString();

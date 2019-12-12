@@ -16,22 +16,26 @@ public class TodoAdapter {
     private SQLiteDatabase db;
     static private DatabaseHelper helper;
 
+
     // コンストラクタ
-    public TodoAdapter(Context context){
+    public TodoAdapter(Context context) {
         helper = new DatabaseHelper(context);
         db = helper.getWritableDatabase();
     }
 
-    // リストを取得
-    public Cursor getAllList(){
-        // if
-        //switch ()
 
-        return db.query(DatabaseHelper.TABLE_NAME, null, null, null, null, null, null);
+    // リストを取得
+    public Cursor getAllList(int category) {
+
+        String sql = "SELECT * FROM db WHERE category=" + category +";";
+
+        return db.rawQuery(sql, null);
+
     }
 
+
     // 追加
-    public void insert(String memo){
+    public void insert(String memo) {
         ContentValues values = new ContentValues();
         values.put("memo", memo);
         db.insertOrThrow(DatabaseHelper.TABLE_NAME, null, values);

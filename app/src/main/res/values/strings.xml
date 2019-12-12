@@ -5,7 +5,7 @@
     <string name="bt_Diary">Diary</string>
     <string name="bt_newTodo">新規作成</string>
     <string name="bt_OnClickBack">戻る</string>
-    <string name="title">PRIVATE : TODO</string>
+    <string name="title">TODO LIST</string>
     <string name="title_work">WORK : TODO</string>
     <string name="title_diary">DIARY : TODO</string>
     <string name="registerText">内容を入力してください。</string>

@@ -1,9 +1,11 @@
 package com.websarva.wings.android.todowithdiary;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,12 +26,15 @@ public class registerPrivateActivity extends AppCompatActivity {
     private TodoAdapter todo;
     private EditText etNote;
 
+    int category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_private);
+        setResult(Activity.RESULT_CANCELED);
 
+        category = getIntent().getIntExtra("category", 0);
 
         //戻るボタン処理
         bt_onBack = (Button) findViewById(R.id.bt_onBack);
@@ -50,6 +55,7 @@ public class registerPrivateActivity extends AppCompatActivity {
         //保存処理
         bt_registerPrivate.setOnClickListener(new View.OnClickListener() {
 
+
             @Override
             public void onClick(View view) {
 
@@ -59,28 +65,32 @@ public class registerPrivateActivity extends AppCompatActivity {
                 DatabaseHelper helper = new DatabaseHelper(registerPrivateActivity.this);
                 SQLiteDatabase db = helper.getWritableDatabase();
 
+
                 try {
                     //インサート文字列
-                    String sqlInsert = "INSERT INTO " + TABLE_NAME + " (todo) VALUES (?)";
+                    String sqlInsert = "INSERT INTO " + TABLE_NAME + " (todo , category) VALUES (?,?)";
 
                     SQLiteStatement stmt;
 
                     stmt = db.compileStatement(sqlInsert);
 
                     stmt.bindString(1, note);
+                    stmt.bindLong(2,category);
 
                     stmt.executeInsert();
                 } finally {
                     db.close();
                 }
 
-                finish();
 
                 etNote.setText("");
 
                 //保存後戻る処理
-                Intent intent = new Intent(registerPrivateActivity.this, privateActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent();
+                setResult(Activity.RESULT_OK, intent);
+
+                finish();
+
             }
         });
 

@@ -35,6 +35,7 @@
 
                     android:layout_marginLeft="130dp"
                     android:layout_marginTop="15dp"
+                    android:background="@color/colorPrimary"
                     android:onClick="onBackButtonClick"
                     android:text="@string/bt_newTodo" />
             </LinearLayout>
@@ -47,7 +48,9 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorAccent" />
+                android:background="@color/colorAccent" >
+
+            </ListView>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,6 +64,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginBottom="15dp"
                     android:layout_marginLeft="10dp"
+                    android:background="@color/colorPrimary"
                     android:onClick="onBackButtonClick"
                     android:text="@string/bt_OnClickBack" />
 
@@ -70,6 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:layout_marginLeft="10dp"
+                    android:background="@color/colorPrimary"
                     android:text="@string/bt_delete" />
             </LinearLayout>
 

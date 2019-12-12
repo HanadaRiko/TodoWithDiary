@@ -5,9 +5,7 @@ package com.websarva.wings.android.todowithdiary;
  */
 
 public class Model {
-    public int get_id() {
-        return _id;
-    }
+    public int get_id() { return _id; }
 
     public void set_id(int _id) {
         this._id = _id;
@@ -21,6 +19,15 @@ public class Model {
         this.todo = todo;
     }
 
-    private  int _id;
+    private int _id;
     private String todo;
+    private  int category;
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
 }

@@ -3,7 +3,8 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+    android:background="@color/colorAccent">
 
         <TextView
             android:id="@+id/textView4"
@@ -21,7 +22,8 @@
         android:layout_marginBottom="3dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/f8f8f8"
         android:ems="10"
         android:inputType="textPersonName"
         android:textSize="24sp" />
@@ -35,7 +37,8 @@
             android:id="@+id/bt_onBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_margin="10dp"
+            android:background="@color/colorPrimary"
             android:onClick="onBackButtonClick"
             android:text="@string/bt_OnClickBack" />
 
@@ -43,7 +46,8 @@
             android:id="@+id/bt_registerPrivate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_margin="10dp"
+            android:background="@color/colorPrimary"
             android:onClick="onSaveButtonClick"
             android:text="@string/bt_register" />
     </LinearLayout>

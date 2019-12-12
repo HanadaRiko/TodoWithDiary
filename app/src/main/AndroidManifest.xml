@@ -17,8 +17,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".privateActivity" />
-        <activity android:name=".workActivity" />
-        <activity android:name=".diaryActivity" />
         <activity android:name=".registerPrivateActivity"></activity>
     </application>
 

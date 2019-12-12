@@ -31,7 +31,7 @@ public class TodoMainActivity extends AppCompatActivity {
         btnWork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TodoMainActivity.this, workActivity.class);
+                Intent intent = new Intent(TodoMainActivity.this, privateActivity.class);
                 intent.putExtra("category", 2);
                 startActivity(intent);
             }
@@ -42,11 +42,13 @@ public class TodoMainActivity extends AppCompatActivity {
         btnDiary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TodoMainActivity.this, diaryActivity.class);
+                Intent intent = new Intent(TodoMainActivity.this, privateActivity.class);
                 intent.putExtra("category", 3);
                 startActivity(intent);
             }
         });
+
+
     }
 
 

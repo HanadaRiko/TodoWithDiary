@@ -1,9 +1,9 @@
 package com.websarva.wings.android.todowithdiary;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -17,9 +17,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,42 +33,44 @@ public class privateActivity extends AppCompatActivity {
     private TodoAdapter todo;
     private List<Model> list = new ArrayList<Model>();
     private ListView lv_private;
-    private  int category;
-
-    TodoListAdapter rowAdapter;
-
-    //private ArrayAdapter<String> adapter;
+    private int category;
+    private TodoListAdapter rowAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private);
 
-        category = getIntent().getIntExtra("category",0);
+        category = getIntent().getIntExtra("category", 0);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         //新規登録画面:遷移
         Button bt_newPrivate = findViewById(R.id.bt_newPrivate);
+
         bt_newPrivate.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 Intent intent = new Intent(privateActivity.this, registerPrivateActivity.class);
                 intent.putExtra("id", "");
-                startActivity(intent);
+                intent.putExtra("category", category);
+                //startActivity(intent);
+                startActivityForResult(intent, 100);
             }
         });
 
 
         todo = new TodoAdapter(this);
-        //Cursor c = todo.getAllList(category);
-        Cursor c = todo.getAllList();
+        Cursor c = todo.getAllList(category);
+
+
         if (c.moveToFirst()) {
             do {
                 Model item = new Model();
                 item.set_id(c.getInt(c.getColumnIndex("_id")));
                 item.setTodo(c.getString(c.getColumnIndex("todo")));
+                item.setCategory(c.getInt(c.getColumnIndex("category")));
                 list.add(item);
             } while (c.moveToNext());
         }
@@ -163,7 +163,7 @@ public class privateActivity extends AppCompatActivity {
 
     private void loadPrivateListView() {
         list.clear();
-        Cursor c = todo.getAllList();
+        Cursor c = todo.getAllList(category);
         if (c.moveToFirst()) {
             do {
                 Model item = new Model();
@@ -229,7 +229,7 @@ public class privateActivity extends AppCompatActivity {
                         DatabaseHelper helper = new DatabaseHelper(privateActivity);
                         SQLiteDatabase db = helper.getWritableDatabase();
                         try {
-                            String sqlDelete = "DELETE FROM " + TABLE_NAME + " ;";
+                            String sqlDelete = "DELETE FROM " + TABLE_NAME + " WHERE category=" + privateActivity.category +";";
                             SQLiteStatement stmt = db.compileStatement(sqlDelete);
                             stmt.executeUpdateDelete();
                         } finally {
@@ -241,14 +241,20 @@ public class privateActivity extends AppCompatActivity {
                     case DialogInterface.BUTTON_NEGATIVE:
                         msg = getString(R.string.dialog_ng_toast);
                 }
+                privateActivity.loadPrivateListView();
                 Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
-
-
             }
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if (resultCode == Activity.RESULT_OK) {
+            loadPrivateListView();
+
+        }
+    }
 }
 
 
